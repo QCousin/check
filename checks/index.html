@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .checkbox {
+            width: 12px;
+            height: 13px;
+            background: #fff;
+            display: inline-block;
+            border: 1px solid #000;
+        }
+        
+        .active {
+            width: 12px;
+            height: 13px;
+            border: 1px solid #000;
+            background: plum;
+            display: inline-block;
+        }
+        
+        [v-clock] {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app" v-clock>
+        <div class="box">
+            <div v-for="(item,index) in shop">
+                <div :class="['checkbox',{'active':item.flag}]" @click="clickfn(index)"></div>
+                <span>{{item.shopname}}</span>
+            </div>
+        </div>
+        <div :class="['checkbox',{'active':allFlag}]" @click="allclickfn"></div>
+        <span>全选</span>
+        <p>{{shoplist}}</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        new Vue({
+            el: "#app",
+            data: {
+                allFlag: false,
+                shop: [{
+                    shopname: "大S",
+                    flag: false,
+                }, {
+                    shopname: "徐子淇",
+                    flag: false,
+
+                }, {
+                    shopname: "郭碧婷",
+                    flag: false,
+
+                }, ]
+            },
+            computed: {
+                shoplist() {
+                    return this.shop.filter(item => item.flag).map(item1 => item1.shopname).join(",")
+                }
+            },
+            methods: {
+                clickfn(ind) {
+                    // this.shop[ind].flag = true; 就可以显示一次效果
+                    this.shop[ind].flag = !this.shop[ind].flag //交换效果
+                    this.allFlag = this.shop.every(item => item.flag)
+                },
+                allclickfn() {
+                    this.allFlag = !this.allFlag;
+                    this.shop.map(item => item.flag = this.allFlag)
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
